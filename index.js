@@ -158,8 +158,10 @@ function processContains(item, list, cb) {
  * should return 3.
  */
 function processDuplicateFree(list, cb) {
-  const res2 = list.reduce((acc, curr, i) => i, 0);
-  return cb(res2);
+  cb = list.filter(function(elem, index, self) {
+    return index == self.indexOf(elem);
+  });
+  return cb;
 }
 
 /////////////// HIGHER-ORDER ARRAY METHODS ///////////////
@@ -202,7 +204,7 @@ function getFullNames(runners) {
  */
 function firstNamesAllCaps(runners) {
   const run = [];
-  runners.forEach(el => run.push(el.first_name.toUpperCase()));
+  runners.map(el => run.push(el.first_name.toUpperCase()));
   return run;
 }
 
@@ -287,8 +289,15 @@ function counterMaker() {
  * counter() // should return 0
  * etc
  */
-function counterMakerWithLimit(/* CODE HERE */) {
-  /* CODE HERE */
+function counterMakerWithLimit(limit) {
+  let count = 0;
+  function counter() {
+    if (count > limit) {
+      count = 0;
+    }
+    return count++;
+  }
+  return counter;
 }
 
 /////////////// END OF CHALLENGE ///////////////
